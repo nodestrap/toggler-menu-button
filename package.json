@@ -1,6 +1,6 @@
 {
   "name": "@nodestrap/toggler-menu-button",
-  "version": "4.0.0",
+  "version": "4.0.1",
   "description": "A toggleable button for showing/hiding menu in Navbar.",
   "type": "module",
   "main": "dist/TogglerMenuButton.jsx",
