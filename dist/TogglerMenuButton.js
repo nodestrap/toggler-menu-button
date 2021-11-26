@@ -394,32 +394,27 @@ export function TogglerMenuButton(props) {
     const childrenFn = (() => {
         // default (unset):
         if (props.children === undefined)
-            return (<svg viewBox='0 0 24 24'>
-                <polyline points='2,3 22,3'/>
-                <polyline points='2,12 22,12'/>
-                <polyline points='2,21 22,21'/>
-            </svg>);
+            return (React.createElement("svg", { viewBox: '0 0 24 24' },
+                React.createElement("polyline", { points: '2,3 22,3' }),
+                React.createElement("polyline", { points: '2,12 22,12' }),
+                React.createElement("polyline", { points: '2,21 22,21' })));
         // other component:
         return props.children;
     })();
     // fn props:
     const propActive = usePropActive(props); // controllable active only; uncontrollable (toggle active) always return `false`
     // jsx:
-    return (<Check 
+    return (React.createElement(Check
     // other props:
-    {...props} 
-    // semantics:
-    aria-expanded={props['aria-expanded'] ?? propActive} 
-    // accessibilities:
-    label={props.label ?? 'Toggle navigation'} 
-    // validations:
-    enableValidation={props.enableValidation ?? false} 
-    // variants:
-    nude={props.nude ?? false} checkStyle={props.checkStyle ?? 'btn'} 
-    // classes:
-    mainClass={props.mainClass ?? sheet.main}>
-            {childrenFn}
-        </Check>);
+    , { ...props, "aria-expanded": props['aria-expanded'] ?? propActive, 
+        // accessibilities:
+        label: props.label ?? 'Toggle navigation', 
+        // validations:
+        enableValidation: props.enableValidation ?? false, 
+        // variants:
+        nude: props.nude ?? false, checkStyle: props.checkStyle ?? 'btn', 
+        // classes:
+        mainClass: props.mainClass ?? sheet.main }, childrenFn));
 }
 TogglerMenuButton.prototype = Check.prototype; // mark as Check compatible
 export { TogglerMenuButton as default };
