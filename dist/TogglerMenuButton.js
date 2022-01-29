@@ -2,11 +2,13 @@
 import { default as React, } from 'react'; // base technology of our nodestrap components
 import { 
 // compositions:
-composition, mainComposition, imports, 
-// layouts:
-layout, vars, children, 
+mainComposition, 
+// styles:
+style, vars, imports, 
 // rules:
-variants, states, isNthChild, } from '@cssfn/cssfn'; // cssfn core
+states, isNthChild, 
+//combinators:
+children, } from '@cssfn/cssfn'; // cssfn core
 import { 
 // hooks:
 createUseSheet, } from '@cssfn/react-cssfn'; // cssfn for react
@@ -42,13 +44,13 @@ labelElm, usesCheckLayout, usesCheckVariants, usesCheckStates, Check, } from '@n
 // hooks:
 // states:
 //#region activePassive
-export const markActive = () => composition([
-    imports([
+export const markActive = () => style({
+    ...imports([
         controlMarkActive(),
         mildOf(null),
         usesThemeActive(), // switch to active theme
     ]),
-]);
+});
 // change default parameter from 'secondary' to `null`:
 export const usesThemeDefault = (themeName = null) => controlUsesThemeDefault(themeName);
 // change default parameter from 'primary' to 'secondary':
@@ -93,40 +95,40 @@ export const usesSvgAnim = () => {
         [svgAnimDecls.btmAnim]: cssProps.svgBtmAnimOut,
     });
     return [
-        () => composition([
-            imports([
+        () => style({
+            ...imports([
                 // animations:
                 anim(),
                 transfNoneVars(),
                 animNoneVars(),
             ]),
-            states([
-                isActived([
-                    imports([
+            ...states([
+                isActived({
+                    ...imports([
                         transfInVars(),
                     ]),
-                ]),
-                isActivating([
-                    imports([
+                }),
+                isActivating({
+                    ...imports([
                         transfInVars(),
                         transfOutVars(),
                         animInVars(),
                     ]),
-                ]),
-                isPassivating([
-                    imports([
+                }),
+                isPassivating({
+                    ...imports([
                         transfInVars(),
                         transfOutVars(),
                         animOutVars(),
                     ]),
-                ]),
-                isPassived([
-                    imports([
+                }),
+                isPassived({
+                    ...imports([
                         transfOutVars(),
                     ]),
-                ]),
+                }),
             ]),
-            vars({
+            ...vars({
                 [svgAnimDecls.topTransf]: [[
                         svgAnimRefs.topTransfIn,
                         svgAnimRefs.topTransfOut,
@@ -140,7 +142,7 @@ export const usesSvgAnim = () => {
                         svgAnimRefs.btmTransfOut,
                     ]],
             }),
-        ]),
+        }),
         svgAnimRefs,
         svgAnimDecls,
     ];
@@ -152,143 +154,122 @@ export const usesSvgLayout = () => {
     // dependencies:
     // animations:
     const [, svgAnimRefs] = usesSvgAnim();
-    return composition([
-        layout({
-            // sizes:
-            // fills the entire parent text's height:
-            blockSize: `calc(1em * var(${bcssDecls.lineHeight},${typos.lineHeight}))`,
-            inlineSize: 'auto',
-            // children:
-            overflow: 'visible',
-            ...children('*', [
-                layout({
-                    // appearances:
-                    stroke: 'currentColor',
-                    strokeWidth: 4,
-                    strokeLinecap: 'square',
-                    // animations:
-                    transformOrigin: '50% 50%',
-                }),
-                variants([
-                    isNthChild(0, 1, [
-                        layout({
-                            // animations:
-                            transf: svgAnimRefs.topTransf,
-                            anim: svgAnimRefs.topAnim,
-                        }),
-                    ]),
-                    isNthChild(0, 2, [
-                        layout({
-                            // animations:
-                            transf: svgAnimRefs.midTransf,
-                            anim: svgAnimRefs.midAnim,
-                        }),
-                    ]),
-                    isNthChild(0, 3, [
-                        layout({
-                            // animations:
-                            transf: svgAnimRefs.btmTransf,
-                            anim: svgAnimRefs.btmAnim,
-                        }),
-                    ]),
-                ]),
-            ]),
+    return style({
+        // sizes:
+        // fills the entire parent text's height:
+        blockSize: `calc(1em * var(${bcssDecls.lineHeight},${typos.lineHeight}))`,
+        inlineSize: 'auto',
+        // children:
+        overflow: 'visible',
+        ...children('*', {
+            // appearances:
+            stroke: 'currentColor',
+            strokeWidth: 4,
+            strokeLinecap: 'square',
+            // animations:
+            transformOrigin: '50% 50%',
+            ...isNthChild(0, 1, {
+                transf: svgAnimRefs.topTransf,
+                anim: svgAnimRefs.topAnim,
+            }),
+            ...isNthChild(0, 2, {
+                transf: svgAnimRefs.midTransf,
+                anim: svgAnimRefs.midAnim,
+            }),
+            ...isNthChild(0, 3, {
+                transf: svgAnimRefs.btmTransf,
+                anim: svgAnimRefs.btmAnim,
+            }),
         }),
-    ]);
+    });
 };
 export const usesTogglerMenuButtonLayout = () => {
-    return composition([
-        imports([
+    return style({
+        ...imports([
             // layouts:
             usesCheckLayout(),
             // colors:
             usesThemeDefault(),
         ]),
-        layout({
+        ...style({
             // children:
-            ...children(labelElm, [
-                layout({
-                    // children:
-                    ...children(svgElm, [
-                        imports([
-                            usesSvgLayout(),
-                        ]),
+            ...children(labelElm, {
+                // children:
+                ...children(svgElm, {
+                    ...imports([
+                        usesSvgLayout(),
                     ]),
-                    // customize:
-                    ...usesGeneralProps(cssProps), // apply general cssProps
                 }),
-            ]),
+                // customize:
+                ...usesGeneralProps(cssProps), // apply general cssProps
+            }),
         }),
-        vars({
+        ...vars({
             [icssDecls.animActive]: cssProps.animActive,
             [icssDecls.animPassive]: cssProps.animPassive,
         }),
-    ]);
+    });
 };
 export const usesTogglerMenuButtonVariants = () => {
     // dependencies:
     // layouts:
-    const [sizes] = usesSizeVariant((sizeName) => composition([
-        layout({
-            // overwrites propName = propName{SizeName}:
-            ...overwriteProps(cssDecls, usesSuffixedProps(cssProps, sizeName)),
-        }),
-    ]));
-    return composition([
-        imports([
+    const [sizes] = usesSizeVariant((sizeName) => style({
+        // overwrites propName = propName{SizeName}:
+        ...overwriteProps(cssDecls, usesSuffixedProps(cssProps, sizeName)),
+    }));
+    return style({
+        ...imports([
             // variants:
             usesCheckVariants(),
             // layouts:
             sizes(),
         ]),
-    ]);
+    });
 };
 export const usesTogglerMenuButtonStates = () => {
     // dependencies:
     // animations:
     const [svgAnim] = usesSvgAnim();
-    return composition([
-        imports([
+    return style({
+        ...imports([
             // states:
             usesCheckStates(),
             // animations:
             svgAnim(),
         ]),
-        states([
-            isActive([
-                imports([
+        ...states([
+            isActive({
+                ...imports([
                     markActive(),
                 ]),
-            ]),
-            isFocus([
-                imports([
+            }),
+            isFocus({
+                ...imports([
                     markActive(),
                 ]),
-            ]),
-            isArrive([
-                imports([
+            }),
+            isArrive({
+                ...imports([
                     markActive(),
                 ]),
-            ]),
-            isPress([
-                imports([
+            }),
+            isPress({
+                ...imports([
                     markActive(),
                 ]),
-            ]),
+            }),
         ]),
-    ]);
+    });
 };
 export const useTogglerMenuButtonSheet = createUseSheet(() => [
-    mainComposition([
-        imports([
-            // layouts:
-            usesTogglerMenuButtonLayout(),
-            // variants:
-            usesTogglerMenuButtonVariants(),
-            // states:
-            usesTogglerMenuButtonStates(),
-        ]),
-    ]),
+    mainComposition(imports([
+        // layouts:
+        usesTogglerMenuButtonLayout(),
+        // variants:
+        usesTogglerMenuButtonVariants(),
+        // states:
+        usesTogglerMenuButtonStates(),
+    ])),
 ], /*sheetId :*/ '5sj70x1zsf'); // an unique salt for SSR support, ensures the server-side & client-side have the same generated class names
 // configs:
 export const [cssProps, cssDecls, cssVals, cssConfig] = createCssConfig(() => {

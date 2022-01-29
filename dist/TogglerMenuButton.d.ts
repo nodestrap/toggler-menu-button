@@ -2,9 +2,9 @@
 import type { PropEx } from '@cssfn/css-types';
 import { ThemeName } from '@nodestrap/basic';
 import { CheckProps } from '@nodestrap/check';
-export declare const markActive: () => import("@cssfn/cssfn").StyleCollection;
-export declare const usesThemeDefault: (themeName?: ThemeName | null) => import("@cssfn/cssfn").StyleCollection;
-export declare const usesThemeActive: (themeName?: ThemeName | null) => import("@cssfn/cssfn").StyleCollection;
+export declare const markActive: () => import("@cssfn/cssfn").Rule;
+export declare const usesThemeDefault: (themeName?: ThemeName | null) => import("@cssfn/cssfn").Rule;
+export declare const usesThemeActive: (themeName?: ThemeName | null) => import("@cssfn/cssfn").Rule;
 export interface SvgAnimVars {
     topTransfIn: any;
     midTransfIn: any;
@@ -37,11 +37,11 @@ export interface SvgAnimVars {
      */
     btmAnim: any;
 }
-export declare const usesSvgAnim: () => readonly [() => import("@cssfn/cssfn").StyleCollection, import("@cssfn/css-var").ReadonlyRefs<SvgAnimVars>, import("@cssfn/css-var").ReadonlyDecls<SvgAnimVars>];
-export declare const usesSvgLayout: () => import("@cssfn/cssfn").StyleCollection;
-export declare const usesTogglerMenuButtonLayout: () => import("@cssfn/cssfn").StyleCollection;
-export declare const usesTogglerMenuButtonVariants: () => import("@cssfn/cssfn").StyleCollection;
-export declare const usesTogglerMenuButtonStates: () => import("@cssfn/cssfn").StyleCollection;
+export declare const usesSvgAnim: () => readonly [() => import("@cssfn/cssfn").Rule, import("@cssfn/css-var").ReadonlyRefs<SvgAnimVars>, import("@cssfn/css-var").ReadonlyDecls<SvgAnimVars>];
+export declare const usesSvgLayout: () => import("@cssfn/cssfn").Rule;
+export declare const usesTogglerMenuButtonLayout: () => import("@cssfn/cssfn").Rule;
+export declare const usesTogglerMenuButtonVariants: () => import("@cssfn/cssfn").Rule;
+export declare const usesTogglerMenuButtonStates: () => import("@cssfn/cssfn").Rule;
 export declare const useTogglerMenuButtonSheet: import("@cssfn/types").Factory<import("jss").Classes<"main">>;
 export declare const cssProps: import("@cssfn/css-config").Refs<{
     svgTopTransfIn: string[][];
